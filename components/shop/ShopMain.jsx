@@ -386,6 +386,7 @@ const ShopMain = ({ initialFilters = {} }) => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sort products"
                   className="border border-gray-300 rounded px-2.5 py-1.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 font-medium"
                 >
                   <option value="">Default sorting</option>
