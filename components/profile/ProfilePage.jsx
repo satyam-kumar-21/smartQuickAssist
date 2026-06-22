@@ -8,6 +8,7 @@ import { getUserDetails, updateUserProfile } from '../../store/actions/userActio
 import { listMyOrders } from '../../store/actions/orderActions';
 import { USER_UPDATE_PROFILE_RESET } from '../../store/constants/userConstants';
 import HelpSupport from './HelpSupport';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
     const [firstName, setFirstName] = useState('');
@@ -50,7 +51,7 @@ const ProfilePage = () => {
                 setEmail(user.email);
             }
         }
-    }, [dispatch, navigate, userInfo, user, success]);
+    }, [dispatch, router, userInfo, user, success]);
 
     useEffect(() => {
         if (success) {

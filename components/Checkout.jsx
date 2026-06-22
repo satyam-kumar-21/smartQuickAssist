@@ -17,12 +17,12 @@ const Checkout = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    const [address, setAddress] = useState(shippingAddress.address || '');
-    const [city, setCity] = useState(shippingAddress.city || '');
-    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
-    const [country, setCountry] = useState(shippingAddress.country || 'US');
-    const [province, setProvince] = useState(shippingAddress.state || '');
-    const [phone, setPhone] = useState(shippingAddress.phone || '');
+    const [address, setAddress] = useState(shippingAddress?.address || '');
+    const [city, setCity] = useState(shippingAddress?.city || '');
+    const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || '');
+    const [country, setCountry] = useState(shippingAddress?.country || 'US');
+    const [province, setProvince] = useState(shippingAddress?.state || '');
+    const [phone, setPhone] = useState(shippingAddress?.phone || '');
 
     const [step, setStep] = useState(1);
     const [shippingRates, setShippingRates] = useState([]);
@@ -34,6 +34,9 @@ const Checkout = () => {
     const [agreeToTerms, setAgreeToTerms] = useState(false);
 
     useEffect(() => {
+        // Prevent execution on server during build phase
+        if (typeof window === 'undefined') return;
+
         const mountCloverElements = () => {
             setTimeout(() => {
                 const numberEl = document.querySelector('#card-number');
@@ -42,7 +45,7 @@ const Checkout = () => {
                 const zipEl = document.querySelector('#card-postal-code');
 
                 // Check if containers exist and are empty
-                if (numberEl && !numberEl.hasChildNodes()) {
+                if (numberEl && !numberEl.hasChildNodes() && window.Clover) {
                     const cloverInstance = new window.Clover(process.env.NEXT_PUBLIC_CLOVER_PUBLIC_KEY);
                     const elements = cloverInstance.elements();
 
@@ -50,7 +53,7 @@ const Checkout = () => {
                         body: {
                             fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                             fontSize: '14px',
-                            color: '#334155', // slate-700
+                            color: '#334155', 
                             fontWeight: '500',
                             margin: '0',
                             padding: '0',
@@ -62,7 +65,7 @@ const Checkout = () => {
                             width: '100%'
                         },
                         'input::placeholder': {
-                            color: '#94a3b8' // slate-400
+                            color: '#94a3b8' 
                         }
                     };
 
@@ -100,7 +103,8 @@ const Checkout = () => {
 
             script.addEventListener('load', mountCloverElements, { once: true });
         }
-    }, [userInfo, cartItems, navigate, step]);
+    // ✅ FIX: Removed 'navigate' from dependency tracker and added safe routing dependency
+    }, [userInfo, cartItems, step, router]);
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
     const taxPrice = 0;
@@ -122,21 +126,21 @@ const Checkout = () => {
                 const rates = data.rates || (Array.isArray(data) ? data : []);
                 setDistance(data.distance || null);
 
-                                // Deduplicate by carrier + service, keep cheapest of each
-                                const uniqueMap = {};
-                                rates.forEach(rate => {
-                                    const key = `${rate.carrier}_${rate.service}`;
-                                    if (!uniqueMap[key] || Number(rate.rate) < Number(uniqueMap[key].rate)) {
-                                        uniqueMap[key] = rate;
-                                    }
-                                });
-                                // Sort by price and show up to 4 best options
-                                const bestRates = Object.values(uniqueMap)
-                                    .sort((a, b) => Number(a.rate) - Number(b.rate))
-                                    .slice(0, 4);
-                                setShippingRates(bestRates);
-                                setRatesFetched(true);
-                                if (bestRates.length > 0) setSelectedRate(bestRates[0]);
+                // Deduplicate by carrier + service, keep cheapest of each
+                const uniqueMap = {};
+                rates.forEach(rate => {
+                    const key = `${rate.carrier}_${rate.service}`;
+                    if (!uniqueMap[key] || Number(rate.rate) < Number(uniqueMap[key].rate)) {
+                        uniqueMap[key] = rate;
+                    }
+                });
+                // Sort by price and show up to 4 best options
+                const bestRates = Object.values(uniqueMap)
+                    .sort((a, b) => Number(a.rate) - Number(b.rate))
+                    .slice(0, 4);
+                setShippingRates(bestRates);
+                setRatesFetched(true);
+                if (bestRates.length > 0) setSelectedRate(bestRates[0]);
             } catch (error) {
                 alert(error.response?.data?.message || 'Error fetching shipping rates');
             } finally {
@@ -151,7 +155,6 @@ const Checkout = () => {
         }
     };
 
-    // ✅ CLOVER PAYMENT
     const initPayment = async () => {
         try {
             setLoading(true);
@@ -174,7 +177,6 @@ const Checkout = () => {
                  return;
             }
 
-            // 1. Create order
             const orderData = {
                 orderItems: cartItems,
                 shippingAddress: { 
@@ -193,20 +195,13 @@ const Checkout = () => {
                 totalPrice,
             };
 
-            const { data: createdOrder } = await api.post(
-                `/orders`,
-                orderData
-            );
+            const { data: createdOrder } = await api.post(`/orders`, orderData);
 
-            // 2. Clover payment (backend)
-            await api.post(
-                `/orders/clover/pay`,
-                {
-                    amount: totalPrice,
-                    orderId: createdOrder._id,
-                    source: result.token
-                }
-            );
+            await api.post(`/orders/clover/pay`, {
+                amount: totalPrice,
+                orderId: createdOrder._id,
+                source: result.token
+            });
 
             router.push('/profile');
 
@@ -220,7 +215,6 @@ const Checkout = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/20 py-12">
-
             {/* Background Patterns */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-200/10 to-transparent rounded-full blur-3xl"></div>
@@ -228,7 +222,6 @@ const Checkout = () => {
             </div>
 
             <div className="relative z-10 max-w-5xl mx-auto px-4">
-
                 {/* Progress */}
                 <div className="flex items-center justify-center mb-12 space-x-4">
                     {[1, 2].map((s) => (
@@ -243,8 +236,7 @@ const Checkout = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
-
-                    {/* LEFT */}
+                    {/* LEFT PANEL */}
                     <div className="lg:col-span-3">
                         {step === 1 ? (
                             <form onSubmit={submitShippingHandler} className="bg-gradient-to-br from-white to-blue-50/30 p-4 sm:p-6 md:p-8 lg:p-10 rounded-3xl shadow-lg shadow-blue-100/30 border-2 border-slate-100 backdrop-blur-sm">
@@ -253,11 +245,11 @@ const Checkout = () => {
                                         <Truck size={20} />
                                     </div>
                                     Shipping Details
-                                </h2>
+                                </h2> 
 
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Street Address</label>
+                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Street Address</label>
                                         <input 
                                             value={address} 
                                             onChange={(e) => { setAddress(e.target.value); setRatesFetched(false); setShippingRates([]); setSelectedRate(null); }} 
@@ -269,7 +261,7 @@ const Checkout = () => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">City</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">City</label>
                                             <input 
                                                 value={city} 
                                                 onChange={(e) => { setCity(e.target.value); setRatesFetched(false); setShippingRates([]); setSelectedRate(null); }} 
@@ -279,7 +271,7 @@ const Checkout = () => {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">State / Province</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">State / Province</label>
                                             <input 
                                                 value={province} 
                                                 onChange={(e) => { setProvince(e.target.value); setRatesFetched(false); setShippingRates([]); setSelectedRate(null); }} 
@@ -289,7 +281,7 @@ const Checkout = () => {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Postal Code</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Postal Code</label>
                                             <input 
                                                 value={postalCode} 
                                                 onChange={(e) => { setPostalCode(e.target.value); setRatesFetched(false); setShippingRates([]); setSelectedRate(null); }} 
@@ -302,7 +294,7 @@ const Checkout = () => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Country</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Country</label>
                                             <select 
                                                 value={country} 
                                                 onChange={(e) => { setCountry(e.target.value); setRatesFetched(false); setShippingRates([]); setSelectedRate(null); }} 
@@ -314,7 +306,7 @@ const Checkout = () => {
                                             </select>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Phone Number</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Phone Number</label>
                                             <input 
                                                 value={phone} 
                                                 onChange={(e) => setPhone(e.target.value)} 
@@ -348,7 +340,7 @@ const Checkout = () => {
                                                             : 'border-slate-100 hover:border-slate-300'
                                                     }`}
                                                 >
-                                                    <div className="min-w-0 flex-1">
+                                                    <div className="min-w-0 flex-1 text-left">
                                                         <div className="font-bold text-slate-900 break-words whitespace-normal text-sm sm:text-base">{rate.service}</div>
                                                         <div className="text-xs text-slate-500 break-words whitespace-normal">{rate.carrier} • {rate.delivery_days ? `${rate.delivery_days} days` : 'Standard'}</div>
                                                     </div>
@@ -385,7 +377,6 @@ const Checkout = () => {
                             </form>
                         ) : (
                             <div className="bg-gradient-to-br from-white to-blue-50/30 p-4 sm:p-6 md:p-8 lg:p-10 rounded-3xl shadow-lg shadow-blue-100/30 border-2 border-slate-100 backdrop-blur-sm space-y-6 sm:space-y-8">
-                                {/* Payment Header */}
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                                     <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
                                         <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-100 rounded-full flex items-center justify-center text-blue-600">
@@ -398,20 +389,18 @@ const Checkout = () => {
                                     </button>
                                 </div>
 
-                                {/* Order Summary */}
                                 <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 space-y-4 mb-6">
                                     <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Order Summary</h4>
                                     <div className="divide-y divide-slate-200">
                                         {cartItems.map((item, i) => (
                                             <div key={i} className="flex flex-col sm:flex-row sm:justify-between py-3 text-sm font-medium text-slate-700 gap-1">
-                                                <span className="line-clamp-1 font-semibold">{item.title}</span>
+                                                <span className="line-clamp-1 font-semibold text-left">{item.title}</span>
                                                 <span className="shrink-0">{item.qty} × ${item.price}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* Card Payment Section */}
                                 <div className="space-y-4">
                                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                         <label className="text-xs text-slate-500 font-bold uppercase tracking-wider">Pay with Card</label>
@@ -422,30 +411,28 @@ const Checkout = () => {
                                         </div>
                                     </div>
 
-                                    {/* Card Number */}
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Card Number</label>
+                                    <div className="space-y-2 text-left">
+                                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Card Number</label>
                                         <div className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-transparent transition-all">
                                             <div id="card-number" className="w-full h-[22px]"></div>
                                         </div>
                                     </div>
 
-                                    {/* Expiry, CVV, Zip - Responsive Grid */}
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Expiry</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Expiry</label>
                                             <div className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-transparent transition-all">
                                                 <div id="card-date" className="w-full h-[22px]"></div>
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">CVV</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">CVV</label>
                                             <div className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-transparent transition-all">
                                                 <div id="card-cvv" className="w-full h-[22px]"></div>
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wilder ml-1">Zip Code</label>
+                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Zip Code</label>
                                             <div className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-transparent transition-all">
                                                 <div id="card-postal-code" className="w-full h-[22px]"></div>
                                             </div>
@@ -457,8 +444,7 @@ const Checkout = () => {
                                         <span>Instant Payment Processing. No OTP required for supported cards.</span>
                                     </div>
 
-                                    {/* Terms & Conditions Checkbox */}
-                                    <div className="mt-6 p-4 bg-blue-50/50 border border-blue-200 rounded-xl space-y-3">
+                                    <div className="mt-6 p-4 bg-blue-50/50 border border-blue-200 rounded-xl space-y-3 text-left">
                                         <label className="flex items-start gap-3 cursor-pointer group">
                                             <input
                                                 type="checkbox"
@@ -476,7 +462,7 @@ const Checkout = () => {
                                 <button
                                     onClick={initPayment}
                                     disabled={loading || !agreeToTerms}
-                                    className="w-full mt-6 bg-gradient-to-r from-blue-600 to-blue-600 text-white py-4 rounded-2xl font-bold uppercase text-xs tracking-widest hover:shadow-lg hover:shadow-blue-200/50 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:from-blue-700 hover:to-blue-700"
+                                    className="w-full mt-6 bg-gradient-to-r from-blue-600 to-blue-600 text-white py-4 rounded-2xl font-bold uppercase text-xs tracking-wildest hover:shadow-lg hover:shadow-blue-200/50 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed hover:from-blue-700 hover:to-blue-700"
                                 >
                                     {loading ? <Loader2 className="animate-spin" size={18} /> : <>Pay Now <ShieldCheck size={18} /></>}
                                 </button>
@@ -484,44 +470,30 @@ const Checkout = () => {
                         )}
                     </div>
 
-                    {/* RIGHT */}
+                    {/* RIGHT SIDEBAR PANEL */}
                     <div className="lg:col-span-2 bg-gradient-to-br from-white to-blue-50/30 border-2 border-slate-100 p-4 sm:p-6 md:p-8 lg:p-10 rounded-3xl h-fit shadow-lg shadow-blue-100/30 backdrop-blur-sm">
-                        <h3 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent mb-6 sm:mb-8 uppercase tracking-tighter">Summary</h3>
+                        <h3 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent mb-6 sm:mb-8 uppercase tracking-tighter text-left">Summary</h3>
                         
-                        <div className="space-y-4 font-medium">
-                            <div className="flex justify-between py-3 px-4 bg-slate-50 rounded-xl border border-slate-100">
-                                <span className="text-slate-600">Subtotal:</span>
-                                <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent font-bold">${subtotal.toFixed(2)}</span>
+                        <div className="space-y-4 font-medium text-sm text-slate-600">
+                            <div className="flex justify-between border-b border-slate-100 pb-2">
+                                <span>Subtotal</span>
+                                <span className="font-bold text-slate-800">${subtotal.toFixed(2)}</span>
                             </div>
-
-                            {distance && (
-                                <div className="flex justify-between py-3 px-4 bg-gradient-to-r from-blue-50 to-blue-50 rounded-xl border border-blue-100">
-                                    <span className="text-blue-600 font-semibold">Distance:</span>
-                                    <span className="text-blue-600 font-bold">{distance} miles</span>
-                                </div>
-                            )}
-
-                            <div className="flex justify-between py-3 px-4 bg-slate-50 rounded-xl border border-slate-100">
-                                <span className="text-slate-600">Tax:</span>
-                                <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent font-bold">${taxPrice.toFixed(2)}</span>
+                            <div className="flex justify-between border-b border-slate-100 pb-2">
+                                <span>Estimated Tax</span>
+                                <span className="font-bold text-slate-800">${taxPrice.toFixed(2)}</span>
                             </div>
-
-                            <div className="flex justify-between py-3 px-4 bg-slate-50 rounded-xl border border-slate-100">
-                                <span className="text-slate-600">Shipping:</span>
-                                <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent font-bold">${shippingPrice.toFixed(2)}</span>
+                            <div className="flex justify-between border-b border-slate-100 pb-2">
+                                <span>Shipping</span>
+                                <span className="font-bold text-slate-800">
+                                    {selectedRate ? `$${shippingPrice.toFixed(2)}` : 'Calculated next'}
+                                </span>
+                            </div>
+                            <div className="flex justify-between pt-2 text-base font-black text-slate-900 uppercase tracking-tight">
+                                <span>Total Price</span>
+                                <span className="text-lg text-blue-600">${totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
-
-                        <div className="my-6 h-[2px] bg-gradient-to-r from-blue-200 via-transparent to-blue-200" />
-                        
-                        <div className="flex justify-between items-center">
-                            <span className="font-bold text-slate-600 text-lg">Total:</span>
-                            <span className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">${totalPrice.toFixed(2)}</span>
-                        </div>
-
-                        <p className="text-xs text-slate-500 mt-8 font-medium leading-relaxed px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
-                            🔒 Payments are securely processed via Clover (PCI-DSS compliant).
-                        </p>
                     </div>
 
                 </div>
