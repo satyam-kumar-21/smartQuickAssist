@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 let testAccount: any = null;
 let transporter: any = null;
@@ -14,7 +15,7 @@ const createTestAccount = async () => {
                 user: testAccount.user,
                 pass: testAccount.pass
             }
-        });
+        } as SMTPTransport.Options);
         return testAccount;
     } catch (error) {
         console.error('❌ Failed to create Ethereal test account:', error);
@@ -48,7 +49,7 @@ const initializeTransporter = async () => {
                 rejectUnauthorized: false,
                 minVersion: 'TLSv1.2'
             }
-        });
+        } as SMTPTransport.Options);
     } else {
         transporter = nodemailer.createTransport({
             pool: true,
@@ -70,7 +71,7 @@ const initializeTransporter = async () => {
             tls: {
                 rejectUnauthorized: false
             }
-        });
+        } as SMTPTransport.Options);
     }
 };
 
