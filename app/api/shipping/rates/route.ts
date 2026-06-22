@@ -136,7 +136,9 @@ export async function POST(request: Request) {
             ];
             
             const filteredRates = shipment.rates.filter((rate: any) => allowedAccounts.includes(rate.carrier_account_id));
-            let finalRates = filteredRates.length > 0 ? filteredRates : shipment.rates;
+            
+            // FIX: Explicitly type finalRates array to handle either structural mapping
+            let finalRates: any[] = filteredRates.length > 0 ? filteredRates : shipment.rates;
 
             if (finalRates.length === 0) {
                 finalRates = getFallbackRates();
