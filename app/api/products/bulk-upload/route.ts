@@ -3,7 +3,8 @@ import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
 import Category from '@/lib/models/Category';
 import { getAuthenticatedUser } from '@/lib/auth';
-import XLSX from 'xlsx';
+// FIX: Change default import to a wildcard namespace import
+import * as XLSX from 'xlsx'; 
 
 export async function POST(request: Request) {
     try {
