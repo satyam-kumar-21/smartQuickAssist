@@ -128,6 +128,16 @@ const ShopMain = ({ initialFilters = {} }) => {
       sortedResult.sort((a, b) => a.price - b.price);
     } else if (sortBy === 'highToLow') {
       sortedResult.sort((a, b) => b.price - a.price);
+    } else {
+      // Default sorting: prioritize non-"Ink & Toner" products first
+      sortedResult.sort((a, b) => {
+        const aIsInkToner = a.category?.name === 'Ink & Toner';
+        const bIsInkToner = b.category?.name === 'Ink & Toner';
+        if (aIsInkToner && !bIsInkToner) return 1; // a comes after b
+        if (!aIsInkToner && bIsInkToner) return -1; // a comes before b
+        // If same category, sort by newest (assuming _id has timestamp)
+        return b._id.localeCompare(a._id);
+      });
     }
 
     return sortedResult;
