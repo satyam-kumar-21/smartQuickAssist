@@ -38,7 +38,8 @@ const Header = () => {
     "relative after:absolute after:left-0 after:-bottom-2 after:h-[2px] after:bg-black after:w-0 after:transition-all after:duration-300 uppercase tracking-wider";
 
   const getLinkClass = (href: string) => {
-    const isActive = pathname === href;
+    // Check both href and href without trailing slash
+    const isActive = pathname === href || pathname === href.replace(/\/$/, '');
     return `${navItem} ${isActive ? "text-white after:w-full" : "hover:text-white/80"}`;
   };
 
@@ -56,10 +57,10 @@ const Header = () => {
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex gap-6 lg:gap-10 text-white font-medium text-[14px]">
             <Link href="/" className={getLinkClass("/")}>Home</Link>
-            <Link href="/about" className={getLinkClass("/about")}>About Us</Link>
-            <Link href="/shop" className={getLinkClass("/shop")}>Store</Link>
-            <Link href="/faq" className={getLinkClass("/faq")}>FAQ's</Link>
-            <Link href="/contact-us" className={getLinkClass("/contact-us")}>Contact Us</Link>
+            <Link href="/about/" className={getLinkClass("/about/")}>About Us</Link>
+            <Link href="/shop/" className={getLinkClass("/shop/")}>Store</Link>
+            <Link href="/faq/" className={getLinkClass("/faq/")}>FAQ's</Link>
+            <Link href="/contact-us/" className={getLinkClass("/contact-us/")}>Contact Us</Link>
           </nav>
 
           {/* RIGHT ICONS */}
@@ -85,7 +86,7 @@ const Header = () => {
                     </div>
                     {userInfo.isAdmin ? (
                       <Link
-                        href="/admin/dashboard"
+                        href="/admin/dashboard/"
                         className="block px-4 py-2 text-sm text-blue-600 font-bold hover:bg-blue-50 transition-colors"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
@@ -93,7 +94,7 @@ const Header = () => {
                       </Link>
                     ) : (
                       <Link
-                        href="/profile"
+                        href="/profile/"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
@@ -127,7 +128,7 @@ const Header = () => {
                   : "$0.00"}
               </span>
 
-              <Link href="/cart" aria-label="Shopping cart">
+              <Link href="/cart/" aria-label="Shopping cart">
                 <ShoppingCart size={22} className="text-white" />
               </Link>
 
@@ -167,10 +168,10 @@ const Header = () => {
 
             <nav className="flex flex-col gap-4 mt-8 flex-1">
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">Home</Link>
-              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">About Us</Link>
-              <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">Store</Link>
-              <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">FAQ's</Link>
-              <Link href="/contact-us" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">Contact Us</Link>
+              <Link href="/about/" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">About Us</Link>
+              <Link href="/shop/" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">Store</Link>
+              <Link href="/faq/" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">FAQ's</Link>
+              <Link href="/contact-us/" onClick={() => setMobileMenuOpen(false)} className="text-gray-700 font-medium hover:text-blue-500">Contact Us</Link>
             </nav>
 
             {/* Mobile Profile Section */}
@@ -188,7 +189,7 @@ const Header = () => {
                 <div className="space-y-2">
                   {userInfo.isAdmin ? (
                     <Link
-                      href="/admin/dashboard"
+                      href="/admin/dashboard/"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block w-full px-3 py-2 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded transition-colors"
                     >
@@ -196,7 +197,7 @@ const Header = () => {
                     </Link>
                   ) : (
                     <Link
-                      href="/profile"
+                      href="/profile/"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
                     >

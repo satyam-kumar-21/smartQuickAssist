@@ -48,7 +48,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-[#f8f9fa] min-h-screen w-full font-sans py-16 px-6 sm:px-12 lg:px-20 text-[#222222]">
+    <div className="bg-[#f8f9fa] w-full font-sans py-16 px-6 sm:px-12 lg:px-20 text-[#222222]">
       
       {/* Central Header Section */}
       <div className="text-center max-w-xl mx-auto mb-16">

@@ -1,154 +1,278 @@
 import React from "react";
-import Link from "next/link";
 
-const Disclaimer = () => {
+function Disclaimer() {
   return (
-    <section className="w-full bg-gradient-to-b from-blue-50 via-white to-blue-50 min-h-screen py-16">
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-
-        {/* Breadcrumb Navigation */}
-        <div className="flex justify-center items-center gap-2 text-sm text-gray-600">
-          <Link href="/" className="hover:text-blue-600 transition">Home</Link>
-          <span>/</span>
-          <span className="text-gray-900 font-medium">Disclaimer</span>
-        </div>
-
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
+    <section className="bg-[#f5f5f5] py-20">
+      <div className="max-w-5xl mx-auto px-5">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Disclaimer
           </h1>
-          <div className="mt-2 h-1 w-24 bg-gradient-to-r from-blue-500 to-blue-500 rounded-full mx-auto"></div>
-          <p className="mt-6 text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
-            Last Updated: March 25, 2026
-          </p>
-        </div>
 
-        <div className="space-y-10">
-
-          {/* Introduction */}
-          <div className="space-y-4 bg-white rounded-lg p-6 shadow-sm border-l-4 border-blue-500">
-            <p className="text-gray-700 leading-relaxed text-sm sm:text-base md:text-base">
-              Smart Quick Assist is committed to providing accurate, clear, and helpful information to support informed purchasing decisions. This Disclaimer applies to all content, products, and services available on our website.
+          <div className="text-gray-600 mb-10 space-y-1">
+            <p>
+              <strong>Effective Date:</strong> May 23, 2026
+            </p>
+            <p>
+              <strong>Last Updated:</strong> May 23, 2026
             </p>
           </div>
 
-          {/* 1. Product Information & Accuracy */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">1. Product Information & Accuracy</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              We make reasonable efforts to ensure that product details—including specifications, descriptions, pricing, availability, and images—are accurate and up to date. However:
-            </p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm sm:text-base md:text-base">
-              <li>Product specifications, features, and packaging may change without notice by manufacturers</li>
-              <li>Product appearance (such as color) may vary depending on display settings and lighting conditions</li>
-              <li>Print yields and performance metrics are based on manufacturer standards and may vary in actual use</li>
-              <li>Occasional typographical errors or outdated information may occur</li>
-              <li>All product information is provided on an "as-is" and "as-available" basis for general reference only.</li>
-              <li>We do not guarantee that all product details are always complete, current, or error-free.</li>
-            </ul>
-          </div>
+          <div className="space-y-10 text-gray-700 text-[15px] md:text-base leading-8">
+            <div>
+              <p>
+                The information provided by{" "}
+                <strong>Smart Quick Assist</strong> ("we," "our," or "us") on
+                <strong> www.smartquickassist.com</strong> is for general
+                informational and commercial purposes only.
+              </p>
 
-          {/* 2. Usage & Performance Disclaimer */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">2. Usage & Performance Disclaimer</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              Product performance may vary based on factors outside our control, including:
-            </p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm sm:text-base md:text-base">
-              <li>Usage frequency and print volume</li>
-              <li>Environmental conditions (temperature, humidity, dust)</li>
-              <li>Paper type and print settings</li>
-              <li>Maintenance and device condition</li>
-              <li>Use of compatible or third-party consumables</li>
-            </ul>
-            <div className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-500 mt-3">
-              <p className="text-gray-600 text-sm sm:text-base">
-                <strong>Important:</strong> Any references to cost savings, efficiency, or performance are general estimates only and are not guaranteed. Smart Quick Assist does not guarantee specific print yields, cost savings, or performance outcomes.
+              <p className="mt-4">
+                By using this website, you agree to this Disclaimer. If you do
+                not agree, please discontinue use of the website.
               </p>
             </div>
-          </div>
 
-          {/* 3. Independent Retailer & Trademark Disclaimer */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">3. Independent Retailer & Trademark Disclaimer</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              All product names, logos, trademarks, and brand images (including but not limited to HP, Canon, Epson, Brother, and others) are the property of their respective owners and are used strictly for identification and compatibility purposes.
-            </p>
-            <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500 mt-3">
-              <p className="text-gray-700 font-medium text-sm sm:text-base mb-2">Smart Quick Assist:</p>
-              <ul className="list-disc list-inside text-gray-600 space-y-1 text-sm sm:text-base">
-                <li>Operates as an independent online retailer</li>
-                <li>Is not affiliated with, endorsed by, or officially authorized by any manufacturer unless explicitly stated</li>
-                <li>Does not claim any official partnership, certification, or dealership status</li>
+            {/* 1 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                1. Independent Retailer Disclaimer
+              </h2>
+
+              <p>
+                Smart Quick Assist operates as an independent retailer of
+                printers and printing supplies.
+              </p>
+
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>
+                  We are not affiliated with, authorized by, or officially
+                  connected with any printer manufacturer or brand unless
+                  explicitly stated.
+                </li>
+                <li>
+                  All trademarks, logos, brand names, and product names belong
+                  to their respective owners and are used for identification
+                  purposes only.
+                </li>
               </ul>
             </div>
-          </div>
 
-          {/* 4. Manufacturer Warranty Disclaimer */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">4. Manufacturer Warranty Disclaimer</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              Manufacturer warranties are provided solely by the respective brands and are subject to their individual terms and conditions.
-            </p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm sm:text-base md:text-base">
-              <li>Warranty coverage may vary by product, region, and usage</li>
-              <li>Use of third-party or non-OEM consumables may affect warranty eligibility depending on manufacturer policies</li>
-              <li>Customers are advised to review manufacturer warranty documentation for full details.</li>
-            </ul>
-          </div>
+            {/* 2 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                2. General Information Disclaimer
+              </h2>
 
-          {/* 5. No Professional or Technical Advice */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">5. No Professional or Technical Advice</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              All information on this website is provided for general informational purposes only and should not be considered professional, technical, or legal advice.
-            </p>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              Customers are responsible for verifying:
-            </p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm sm:text-base md:text-base">
-              <li>Product compatibility</li>
-              <li>Installation and usage requirements</li>
-              <li>Warranty terms and limitations</li>
-            </ul>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base mt-2">
-              For clarification, customers are encouraged to contact us prior to purchase.
-            </p>
-          </div>
+              <p>
+                All content available on this website is provided in good faith
+                for general informational purposes.
+              </p>
 
-          {/* 6. Limitation of Reliance */}
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900">6. Limitation of Reliance</h2>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              Users agree that any reliance on the information provided on this website is at their own discretion.
-            </p>
-            <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-base">
-              Smart Quick Assist shall not be held liable for decisions made based on website content or product descriptions.
-            </p>
-          </div>
+              <p className="mt-4">
+                While we strive to keep information accurate and updated, we
+                make no guarantees regarding:
+              </p>
 
-          {/* 7. Contact Us */}
-          <div className="space-y-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">7. Contact Us</h2>
-            <p className="leading-relaxed text-sm sm:text-base md:text-base">
-              For product inquiries, clarification, or assistance before making a purchase, please contact us:
-            </p>
-            <div className="space-y-2 text-blue-50 text-sm sm:text-base">
-              <p><strong>Smart Quick Assist</strong></p>
-              <p>📧 <strong>Email:</strong> <a href="mailto:support@smartquickassist.com" className="underline hover:text-white">support@smartquickassist.com</a></p>
-              <p>📍 <strong>Registered Address:</strong><br/>440 Davis Court, Apt 1516<br/>San Francisco, CA 94111<br/>United States</p>
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>Product accuracy.</li>
+                <li>Availability.</li>
+                <li>Completeness of information.</li>
+                <li>Reliability of website content.</li>
+              </ul>
+
+              <p className="mt-4">
+                Use of any information on this website is at your own
+                discretion and risk.
+              </p>
             </div>
-            <p className="text-blue-50 text-sm leading-relaxed mt-3">
-              We are committed to providing clear and helpful assistance to all customers.
-            </p>
-          </div>
 
+            {/* 3 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                3. Support & Technical Guidance Disclaimer
+              </h2>
+
+              <p>
+                Smart Quick Assist may provide general customer guidance and
+                informational assistance related to:
+              </p>
+
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>Printer setup.</li>
+                <li>Troubleshooting.</li>
+                <li>Driver installation and updates.</li>
+                <li>Offline and connectivity issues.</li>
+              </ul>
+
+              <p className="mt-4 font-semibold">Important:</p>
+
+              <ul className="list-disc pl-6 mt-2 space-y-2">
+                <li>Our assistance is informational only.</li>
+                <li>
+                  We are not an authorized repair center or manufacturer
+                  support provider.
+                </li>
+                <li>
+                  Our guidance does not replace official manufacturer services,
+                  documentation, or technical support.
+                </li>
+              </ul>
+
+              <p className="mt-4">
+                For official support, software downloads, warranty claims, or
+                advanced troubleshooting, customers should visit the respective
+                manufacturer's official website.
+              </p>
+            </div>
+
+            {/* 4 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                4. Warranty Disclaimer
+              </h2>
+
+              <p>
+                Products sold through our website may include applicable
+                manufacturer warranties.
+              </p>
+
+              <p className="mt-4">However:</p>
+
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>
+                  Warranty services are handled directly by the manufacturer.
+                </li>
+                <li>
+                  Smart Quick Assist does not provide manufacturer warranty
+                  repairs or claims processing.
+                </li>
+                <li>
+                  Customers should contact the product manufacturer directly for
+                  warranty-related services.
+                </li>
+              </ul>
+            </div>
+
+            {/* 5 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                5. External Links Disclaimer
+              </h2>
+
+              <p>
+                Our website may contain links to third-party websites,
+                including official manufacturer websites.
+              </p>
+
+              <p className="mt-4">
+                We do not control or guarantee:
+              </p>
+
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>Third-party website content.</li>
+                <li>External services or products.</li>
+                <li>Privacy or security practices of external websites.</li>
+              </ul>
+
+              <p className="mt-4">
+                Accessing third-party websites is done at your own risk.
+              </p>
+            </div>
+
+            {/* 6 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                6. Limitation of Liability
+              </h2>
+
+              <p>
+                To the fullest extent permitted by law, Smart Quick Assist shall
+                not be liable for:
+              </p>
+
+              <ul className="list-disc pl-6 mt-4 space-y-2">
+                <li>Direct or indirect damages.</li>
+                <li>Loss of business, profits, or data.</li>
+                <li>
+                  Technical issues related to third-party products or services.
+                </li>
+                <li>
+                  Any losses arising from reliance on website information.
+                </li>
+              </ul>
+
+              <p className="mt-4">
+                Users are responsible for verifying product compatibility and
+                manufacturer recommendations before use.
+              </p>
+            </div>
+
+            {/* 7 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                7. No Professional Advice
+              </h2>
+
+              <p>
+                Information provided on this website, including support
+                guidance, should not be considered professional technical advice
+                or official manufacturer instruction.
+              </p>
+
+              <p className="mt-4">
+                For official product documentation and technical assistance,
+                customers should refer to the respective manufacturer's
+                resources.
+              </p>
+            </div>
+
+            {/* 8 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                8. Changes to This Disclaimer
+              </h2>
+
+              <p>
+                We may update this Disclaimer from time to time. Updated
+                versions will be posted on this page with a revised effective
+                date.
+              </p>
+            </div>
+
+            {/* 9 */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                9. Contact Information
+              </h2>
+
+              <p className="mb-5">
+                If you have any questions regarding this Disclaimer, please
+                contact us:
+              </p>
+
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <p className="font-semibold text-lg mb-2">
+                  Smart Quick Assist
+                </p>
+
+                <p>440 Davis Court, Apt 1516</p>
+                <p>San Francisco, CA 94111, United States</p>
+
+                <p className="mt-4">
+                  📧 <strong>Email:</strong> support@smartquickassist.com
+                </p>
+
+                <p className="mt-2">
+                  🌐 <strong>Website:</strong> www.smartquickassist.com
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
-};
+}
 
 export default Disclaimer;
