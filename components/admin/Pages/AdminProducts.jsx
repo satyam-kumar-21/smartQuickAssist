@@ -6,8 +6,10 @@ import {
     Plus, Search, Trash2, Edit, X, Save,
     Image as ImageIcon, Tag, Hash, DollarSign,
     AlignLeft, Microscope, Layers, AlertCircle,
-    CheckCircle2
+    CheckCircle2, Bold, Italic, List, ListOrdered, Undo, Redo
 } from 'lucide-react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import {
     listProducts,
     deleteProduct,
@@ -17,6 +19,98 @@ import {
 import { listCategories } from '../../../store/actions/categoryActions';
 import { PRODUCT_CREATE_RESET, PRODUCT_UPDATE_RESET } from '../../../store/constants/productConstants';
 import ConfirmModal from '../../common/ConfirmModal';
+
+// Custom Rich Text Editor Component
+const RichTextEditor = ({ content, onChange, placeholder }) => {
+    const editor = useEditor({
+        extensions: [
+            StarterKit.configure({
+                // Configure starter kit if needed
+            }),
+        ],
+        content: content || '',
+        onUpdate: ({ editor }) => {
+            onChange(editor.getHTML());
+        },
+        editorProps: {
+            attributes: {
+                class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none',
+                style: 'min-height: 150px; padding: 12px;',
+            },
+        },
+    });
+
+    // Update editor content when the content prop changes
+    useEffect(() => {
+        if (editor && content !== editor.getHTML()) {
+            editor.commands.setContent(content || '');
+        }
+    }, [editor, content]);
+
+    if (!editor) {
+        return null;
+    }
+
+    return (
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+            {/* Toolbar */}
+            <div className="flex flex-wrap items-center gap-1 p-2 border-b border-slate-200 bg-slate-50">
+                <button
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    disabled={!editor.can().chain().focus().toggleBold().run()}
+                    className={`p-2 rounded-lg hover:bg-slate-200 transition-colors ${editor.isActive('bold') ? 'bg-blue-100 text-blue-600' : ''}`}
+                    title="Bold"
+                >
+                    <Bold size={16} />
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    disabled={!editor.can().chain().focus().toggleItalic().run()}
+                    className={`p-2 rounded-lg hover:bg-slate-200 transition-colors ${editor.isActive('italic') ? 'bg-blue-100 text-blue-600' : ''}`}
+                    title="Italic"
+                >
+                    <Italic size={16} />
+                </button>
+                <div className="w-px h-6 bg-slate-300 mx-1" />
+                <button
+                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    disabled={!editor.can().chain().focus().toggleBulletList().run()}
+                    className={`p-2 rounded-lg hover:bg-slate-200 transition-colors ${editor.isActive('bulletList') ? 'bg-blue-100 text-blue-600' : ''}`}
+                    title="Bullet List"
+                >
+                    <List size={16} />
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    disabled={!editor.can().chain().focus().toggleOrderedList().run()}
+                    className={`p-2 rounded-lg hover:bg-slate-200 transition-colors ${editor.isActive('orderedList') ? 'bg-blue-100 text-blue-600' : ''}`}
+                    title="Ordered List"
+                >
+                    <ListOrdered size={16} />
+                </button>
+                <div className="w-px h-6 bg-slate-300 mx-1" />
+                <button
+                    onClick={() => editor.chain().focus().undo().run()}
+                    disabled={!editor.can().chain().focus().undo().run()}
+                    className="p-2 rounded-lg hover:bg-slate-200 transition-colors"
+                    title="Undo"
+                >
+                    <Undo size={16} />
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().redo().run()}
+                    disabled={!editor.can().chain().focus().redo().run()}
+                    className="p-2 rounded-lg hover:bg-slate-200 transition-colors"
+                    title="Redo"
+                >
+                    <Redo size={16} />
+                </button>
+            </div>
+            {/* Editor Content */}
+            <EditorContent editor={editor} />
+        </div>
+    );
+};
 
 const AdminProducts = () => {
     const dispatch = useDispatch();
@@ -63,6 +157,7 @@ const AdminProducts = () => {
         description: '',
         shortSpecification: '', // Now acts as Keywords
         overview: '',
+        shortDetails: '', // Rich text highlights
         technicalSpecification: '',
         images: [], // Array of existing image URLs
         reviews: [], // Array of { name, avatar, rating, comment }
@@ -198,6 +293,7 @@ const AdminProducts = () => {
             description: product.description || '',
             shortSpecification: product.shortSpecification || '',
             overview: product.overview || '',
+            shortDetails: product.shortDetails || '',
             technicalSpecification: techSpec,
             images: product.images || [],
             reviews: product.reviews || [],
@@ -674,19 +770,17 @@ const AdminProducts = () => {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Highlights (Rich Text)</label>
-                                    <textarea
-                                        className={textareaClass}
-                                        value={formData.shortDetails || ''}
-                                        onChange={(e) => handleQuillChange('shortDetails', e.target.value)}
+                                    <RichTextEditor
+                                        content={formData.shortDetails || ''}
+                                        onChange={(value) => handleQuillChange('shortDetails', value)}
                                         placeholder="Enter product highlights..."
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Narrative Overview</label>
-                                    <textarea
-                                        className={textareaClass}
-                                        value={formData.overview || ''}
-                                        onChange={(e) => handleQuillChange('overview', e.target.value)}
+                                    <RichTextEditor
+                                        content={formData.overview || ''}
+                                        onChange={(value) => handleQuillChange('overview', value)}
                                         placeholder="Enter detailed product overview..."
                                     />
                                 </div>
@@ -703,10 +797,9 @@ const AdminProducts = () => {
                             <div className="grid grid-cols-1 gap-10">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keywords</label>
-                                    <textarea
-                                        className={textareaClass}
-                                        value={formData.shortSpecification || ''}
-                                        onChange={(e) => handleQuillChange('shortSpecification', e.target.value)}
+                                    <RichTextEditor
+                                        content={formData.shortSpecification || ''}
+                                        onChange={(value) => handleQuillChange('shortSpecification', value)}
                                         placeholder="Enter keywords, tags, or short specifications..."
                                     />
                                 </div>
@@ -733,10 +826,9 @@ const AdminProducts = () => {
                                     </div>
 
                                     {specType === 'text' ? (
-                                        <textarea
-                                            className={textareaClass}
-                                            value={formData.technicalSpecification || ''}
-                                            onChange={(e) => handleQuillChange('technicalSpecification', e.target.value)}
+                                        <RichTextEditor
+                                            content={formData.technicalSpecification || ''}
+                                            onChange={(value) => handleQuillChange('technicalSpecification', value)}
                                             placeholder="Enter technical specifications..."
                                         />
                                     ) : (
@@ -982,10 +1074,10 @@ const AdminProducts = () => {
                                                 <div className="flex items-center gap-6">
                                                     <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 flex items-center justify-center p-2 group-hover:scale-105 transition-transform rotate-1 group-hover:rotate-0">
                                                         <img
-                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${process.env.NEXT_PUBLIC_API_URL.replace('/api', '')}${p.images[0]}`) : '/printer.png'}
+                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${process.env.NEXT_PUBLIC_API_URL.replace('/api', '')}${p.images[0]}`) : '/assets/printer.png'}
                                                             alt=""
                                                             className="w-full h-full object-contain"
-                                                            onError={(e) => e.target.src = '/printer.png'}
+                                                            onError={(e) => e.target.src = '/assets/printer.png'}
                                                         />
                                                     </div>
                                                     <div>
