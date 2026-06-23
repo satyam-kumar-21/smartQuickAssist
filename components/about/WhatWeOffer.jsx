@@ -66,7 +66,7 @@ function WhatWeOffer() {
           <div className="relative">
             <div className="overflow-hidden rounded-2xl shadow-xl">
               <img
-                src="./what-we-offer.webp"
+                src="/what-we-offer.webp"
                 alt="What We Offer"
                 className="w-full h-[350px] md:h-[500px] lg:h-[650px] object-cover"
               />
