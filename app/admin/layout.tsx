@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import AdminLayoutWrapper from '@/components/admin/Layout/AdminLayoutWrapper';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = usePathname();F
   
   // Don't wrap login page with AdminLayoutWrapper
   if (pathname === '/admin/login' || pathname === '/admin/login/') {
