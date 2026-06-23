@@ -22,18 +22,18 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, setIsOpen }) => {
 
     const handleLogout = () => {
         dispatch(logout() as any);
-        router.push('/admin/login');
+        router.push('/admin/login/');
     };
 
     const navItems = [
-        { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: 'Categories', path: '/admin/categories', icon: <Layers size={20} /> },
-        { name: 'Products', path: '/admin/products', icon: <Package size={20} /> },
-        { name: 'Customers', path: '/admin/customers', icon: <Users size={20} /> },
-        { name: 'Orders', path: '/admin/orders', icon: <ShoppingBag size={20} /> },
-        { name: 'Customer Chat', path: '/admin/chat', icon: <MessageSquare size={20} /> },
-        { name: 'Analytics', path: '/admin/analytics', icon: <BarChart3 size={20} /> },
-        { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
+        { name: 'Dashboard', path: '/admin/dashboard/', icon: <LayoutDashboard size={20} /> },
+        { name: 'Categories', path: '/admin/categories/', icon: <Layers size={20} /> },
+        { name: 'Products', path: '/admin/products/', icon: <Package size={20} /> },
+        { name: 'Customers', path: '/admin/customers/', icon: <Users size={20} /> },
+        { name: 'Orders', path: '/admin/orders/', icon: <ShoppingBag size={20} /> },
+        { name: 'Customer Chat', path: '/admin/chat/', icon: <MessageSquare size={20} /> },
+        { name: 'Analytics', path: '/admin/analytics/', icon: <BarChart3 size={20} /> },
+        { name: 'Settings', path: '/admin/settings/', icon: <Settings size={20} /> },
     ];
 
     return (
@@ -58,7 +58,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, setIsOpen }) => {
 
                 <nav className="flex-1 py-6 px-4 space-y-1 overflow-y-auto">
                     {navItems.map((item) => {
-                        const isActive = pathname === item.path;
+                        const isActive = pathname === item.path || pathname === item.path.replace(/\/$/, '');
                         return (
                             <Link
                                 key={item.path}

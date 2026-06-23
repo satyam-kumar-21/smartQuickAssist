@@ -24,7 +24,7 @@ const AdminLayoutWrapper: React.FC<AdminLayoutWrapperProps> = ({ children }) => 
     // Auth Check
     useEffect(() => {
         if (!userInfo || !userInfo.isAdmin) {
-            router.push('/admin/login');
+            router.push('/admin/login/');
         }
     }, [userInfo, router]);
 
@@ -89,12 +89,12 @@ const AdminLayoutWrapper: React.FC<AdminLayoutWrapperProps> = ({ children }) => 
             const chatNotifs = unreadChats.map((c: any) => ({
                 id: `chat-${c._id}`, type: 'chat',
                 message: `New message from ${c.user?.name || 'User'}`,
-                dateObject: new Date(c.updatedAt), path: '/admin/chat', read: false
+                dateObject: new Date(c.updatedAt), path: '/admin/chat/', read: false
             }));
             const orderNotifs = newOrders.map((o: any) => ({
                 id: `order-${o._id}`, type: 'order',
                 message: `New Order #${o._id.substring(0, 6)}...`,
-                dateObject: new Date(o.createdAt), path: '/admin/orders', read: false
+                dateObject: new Date(o.createdAt), path: '/admin/orders/', read: false
             }));
             setNotifications([...chatNotifs, ...orderNotifs].sort((a, b) => b.dateObject - a.dateObject));
         } catch { /* silent */ }
