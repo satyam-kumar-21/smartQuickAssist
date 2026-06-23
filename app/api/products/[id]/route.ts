@@ -19,27 +19,8 @@ export async function GET(request: Request, { params }: { params: Promise<Params
         if (mongoose.Types.ObjectId.isValid(id)) {
             product = await Product.findById(id).populate('category', 'name');
         } else {
-            // 1. Search by exact slug
+            // Search by exact slug only
             product = await Product.findOne({ slug: id }).populate('category', 'name');
-
-            // 2. Fallback: Search by title (fuzzy/regex)
-            if (!product) {
-                const titlePattern = id.replace(/-/g, ' ');
-                product = await Product.findOne({
-                    title: { $regex: new RegExp(`^${titlePattern}$`, 'i') }
-                }).populate('category', 'name');
-            }
-
-            // 3. Last Resort Fallback: Match any product where title contains most of the slug
-            if (!product) {
-                const parts = id.split('-');
-                const firstFewParts = parts.slice(0, Math.min(parts.length, 3)).join(' ');
-                if (firstFewParts.length > 5) {
-                    product = await Product.findOne({
-                        title: { $regex: new RegExp(firstFewParts, 'i') }
-                    }).populate('category', 'name');
-                }
-            }
         }
 
         if (product) {

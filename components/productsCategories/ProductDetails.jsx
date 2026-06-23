@@ -36,7 +36,7 @@ const ProductDetails = () => {
     // Use cached product immediately, then swap to full details once loaded
     const product = detailProduct && (detailProduct.slug === productSlug || detailProduct._id === productSlug)
         ? detailProduct
-        : cachedProduct || detailProduct;
+        : cachedProduct;
     const loading = !product && detailsLoading;
 
     const userLogin = useSelector((state) => state.userLogin);
