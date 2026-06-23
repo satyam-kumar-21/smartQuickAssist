@@ -36,11 +36,11 @@ const Footer = () => {
               <h3 className="font-bold text-xl mb-6 text-white">Quick Links</h3>
               <ul className="space-y-3">
                 <li><Link href="/" className="text-gray-300 hover:text-white transition">Home</Link></li>
-                <li><Link href="/about" className="text-gray-300 hover:text-white transition">About Us</Link></li>
-                <li><Link href="/shop" className="text-gray-300 hover:text-white transition">Store</Link></li>
-                <li><Link href="/faq" className="text-gray-300 hover:text-white transition">FAQ's</Link></li>
-                <li><Link href="/blogs" className="text-gray-300 hover:text-white transition">Blog</Link></li>
-                <li><Link href="/contact-us" className="text-gray-300 hover:text-white transition">Contact Us</Link></li>
+                <li><Link href="/about/" className="text-gray-300 hover:text-white transition">About Us</Link></li>
+                <li><Link href="/shop/" className="text-gray-300 hover:text-white transition">Store</Link></li>
+                <li><Link href="/faq/" className="text-gray-300 hover:text-white transition">FAQ's</Link></li>
+                <li><Link href="/blogs/" className="text-gray-300 hover:text-white transition">Blog</Link></li>
+                <li><Link href="/contact-us/" className="text-gray-300 hover:text-white transition">Contact Us</Link></li>
               </ul>
             </div>
 
@@ -48,12 +48,12 @@ const Footer = () => {
             <div>
               <h3 className="font-bold text-xl mb-6 text-white">Important Links</h3>
               <ul className="space-y-3">
-                <li><Link href="/privacy-policy" className="text-gray-300 hover:text-white transition">Privacy Policy</Link></li>
-                <li><Link href="/terms-and-conditions" className="text-gray-300 hover:text-white transition">Terms and Conditions</Link></li>
-                <li><Link href="/refund-return-policy" className="text-gray-300 hover:text-white transition">Return and Refund Policy</Link></li>
-                <li><Link href="/shipping-policy" className="text-gray-300 hover:text-white transition">Shipping Policy</Link></li>
-                <li><Link href="/cookie-policy" className="text-gray-300 hover:text-white transition">Cookie Policy</Link></li>
-                <li><Link href="/disclaimer" className="text-gray-300 hover:text-white transition">Disclaimer</Link></li>
+                <li><Link href="/privacy-policy/" className="text-gray-300 hover:text-white transition">Privacy Policy</Link></li>
+                <li><Link href="/terms-and-conditions/" className="text-gray-300 hover:text-white transition">Terms and Conditions</Link></li>
+                <li><Link href="/refund-return-policy/" className="text-gray-300 hover:text-white transition">Return and Refund Policy</Link></li>
+                <li><Link href="/shipping-policy/" className="text-gray-300 hover:text-white transition">Shipping Policy</Link></li>
+                <li><Link href="/cookie-policy/" className="text-gray-300 hover:text-white transition">Cookie Policy</Link></li>
+                <li><Link href="/disclaimer/" className="text-gray-300 hover:text-white transition">Disclaimer</Link></li>
               </ul>
             </div>
 
