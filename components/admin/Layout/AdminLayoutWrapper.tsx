@@ -17,19 +17,26 @@ interface AdminLayoutWrapperProps {
 const AdminLayoutWrapper: React.FC<AdminLayoutWrapperProps> = ({ children }) => {
     const router = useRouter();
     const dispatch = useDispatch();
+    const [isMounted, setIsMounted] = useState(false);
 
     const userLogin = useSelector((state: any) => state.userLogin || {});
     const { userInfo } = userLogin;
 
+    // Mount check
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     // Auth Check
     useEffect(() => {
-        if (!userInfo || !userInfo.isAdmin) {
+        if (isMounted && (!userInfo || !userInfo.isAdmin)) {
             router.push('/admin/login/');
         }
-    }, [userInfo, router]);
+    }, [userInfo, router, isMounted]);
 
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState<Date | null>(null);
     useEffect(() => {
+        setCurrentTime(new Date());
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
@@ -110,8 +117,16 @@ const AdminLayoutWrapper: React.FC<AdminLayoutWrapperProps> = ({ children }) => 
 
     const handleLogout = () => {
         dispatch(logout() as any);
-        router.push('/admin/login');
+        router.push('/admin/login/');
     };
+
+    if (!isMounted) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-slate-50">
+                <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     if (!userInfo || !userInfo.isAdmin) return null;
 
@@ -129,7 +144,7 @@ const AdminLayoutWrapper: React.FC<AdminLayoutWrapperProps> = ({ children }) => 
                         <div className="hidden md:flex items-center gap-2 text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
                             <Clock size={14} />
                             <span className="text-xs font-semibold font-mono">
-                                {currentTime.toLocaleDateString()} • {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                {currentTime && currentTime.toLocaleDateString()} • {currentTime && currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </span>
                         </div>
                     </div>
