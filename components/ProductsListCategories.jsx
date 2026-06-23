@@ -84,7 +84,7 @@ const ProductsListCategories = ({ title, description, filters = {} }) => {
       : (product.images && product.images.length > 0
         ? (product.images[0].startsWith('http') ? product.images[0] : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || ''}${product.images[0]}`)
         : "/assets/printer.png"),
-    link: `/product/${product.slug || product._id}`
+    link: `/product/${product.slug || product._id}/`
   }));
 
   if (error && !allLoaded) return <div className="py-20 text-center font-black uppercase text-[10px] tracking-[0.3em] text-red-500">{error}</div>;
@@ -111,7 +111,7 @@ const ProductsListCategories = ({ title, description, filters = {} }) => {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {formattedProducts.map((product) => {
           const inStock = product.countInStock > 0;
           return (
