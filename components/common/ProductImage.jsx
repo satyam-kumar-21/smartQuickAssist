@@ -16,7 +16,8 @@ const ProductImage = ({ src, alt, className = '', ...props }) => {
                 <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-50">
                     <div className="w-8 h-8 border-[3px] border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
                 </div>
-            )}
+            )} 
+            
             <img
                 src={src || FALLBACK}
                 alt={alt}
