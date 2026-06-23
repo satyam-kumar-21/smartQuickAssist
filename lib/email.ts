@@ -28,10 +28,10 @@ const initializeTransporter = async () => {
         if (!testAccount) {
             testAccount = await createTestAccount();
         }
-    } else if (process.env.EMAIL_SERVICE === 'brevo' || (process.env.EMAIL_HOST && process.env.EMAIL_HOST.includes('brevo'))) {
+    } else {
         const isSecure = process.env.EMAIL_PORT === '465';
         transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
+            host: process.env.EMAIL_HOST,
             port: parseInt(process.env.EMAIL_PORT || '587'),
             secure: isSecure,
             auth: {
@@ -48,28 +48,6 @@ const initializeTransporter = async () => {
             tls: {
                 rejectUnauthorized: false,
                 minVersion: 'TLSv1.2'
-            }
-        } as SMTPTransport.Options);
-    } else {
-        transporter = nodemailer.createTransport({
-            pool: true,
-            maxConnections: 1,
-            maxMessages: 5,
-            rateDelta: 2000,
-            rateLimit: 1,
-            family: 4,
-            connectionTimeout: 10000,
-            greetingTimeout: 10000,
-            socketTimeout: 20000,
-            host: process.env.EMAIL_HOST,
-            port: parseInt(process.env.EMAIL_PORT || '587'),
-            secure: process.env.EMAIL_SECURE === 'true',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
             }
         } as SMTPTransport.Options);
     }
