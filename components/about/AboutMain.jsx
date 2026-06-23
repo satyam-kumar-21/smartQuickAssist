@@ -1,7 +1,6 @@
 import React from "react";
 import AboutHero from "./AboutHero";
 import WhyChooseAbout from "./WhyChooseAbout";
-import AboutUs from "./AboutUs";
 import WhatWeOffer from "./WhatWeOffer";
 
 const AboutMain = () => {
@@ -16,7 +15,7 @@ const AboutMain = () => {
       </div>
       <div className="relative z-0">
         <AboutHero />
-        <AboutUs />
+ 
       </div>
       <WhatWeOffer />
       <WhyChooseAbout />
