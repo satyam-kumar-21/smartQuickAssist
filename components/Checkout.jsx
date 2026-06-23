@@ -85,7 +85,7 @@ const Checkout = () => {
         };
 
         if (!userInfo || cartItems.length === 0) {
-            router.push('/cart');
+            router.push('/cart/');
         } else if (step === 2) {
             if (window.Clover) {
                 mountCloverElements();
@@ -203,7 +203,7 @@ const Checkout = () => {
                 source: result.token
             });
 
-            router.push('/profile');
+            router.push('/profile/');
 
         } catch (error) {
             console.error(error);
@@ -214,7 +214,7 @@ const Checkout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/20 py-12">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/20 pt-24 sm:pt-28 lg:pt-32 pb-12">
             {/* Background Patterns */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-200/10 to-transparent rounded-full blur-3xl"></div>
@@ -453,7 +453,7 @@ const Checkout = () => {
                                                 className="w-5 h-5 mt-0.5 accent-blue-600 cursor-pointer rounded border-slate-300 focus:ring-2 focus:ring-blue-500"
                                             />
                                             <span className="text-xs leading-relaxed text-slate-700 font-medium group-hover:text-slate-900">
-                                                By placing your order, you confirm that you have read and agree to our <a href="/terms-and-conditions" target="_blank" className="text-blue-600 hover:text-blue-700 underline font-semibold">Terms & Conditions</a> and understand how your personal information is collected and used as described in our <a href="/privacy-policy" target="_blank" className="text-blue-600 hover:text-blue-700 underline font-semibold">Privacy Policy</a>.
+                                                By placing your order, you confirm that you have read and agree to our <a href="/terms-and-conditions/" target="_blank" className="text-blue-600 hover:text-blue-700 underline font-semibold">Terms & Conditions</a> and understand how your personal information is collected and used as described in our <a href="/privacy-policy/" target="_blank" className="text-blue-600 hover:text-blue-700 underline font-semibold">Privacy Policy</a>.
                                             </span>
                                         </label>
                                     </div>

@@ -54,7 +54,7 @@ const Cart = () => {
     };
 
     return (
-        <div className="w-full min-h-screen py-12 bg-white">
+        <div className="w-full min-h-screen pt-24 sm:pt-28 lg:pt-32 pb-12 bg-white">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header */}
                 <div className="mb-8">
@@ -77,7 +77,7 @@ const Cart = () => {
                         </div>
                         <h2 className="text-xl font-bold text-gray-900 mb-3">Your Cart is Empty</h2>
                         <p className="text-gray-600 mb-8">Ready to start printing? Explore our premium hardware collection.</p>
-                        <Link href="/shop" className="inline-block px-8 py-3 bg-[#2364EB] text-white rounded-lg font-semibold hover:bg-[#1a4fb8] transition-colors">
+                        <Link href="/shop/" className="inline-block px-8 py-3 bg-[#2364EB] text-white rounded-lg font-semibold hover:bg-[#1a4fb8] transition-colors">
                             Shop Now
                         </Link>
                     </div>

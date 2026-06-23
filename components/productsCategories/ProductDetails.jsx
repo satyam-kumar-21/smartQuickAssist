@@ -142,7 +142,7 @@ const ProductDetails = () => {
         : ["/assets/printer.png"];
 
     return (
-        <div className="min-h-screen bg-white pt-24">
+        <div className="min-h-screen bg-white pt-24 sm:pt-28 lg:pt-32">
             <SEO
                 title={product.title}
                 description={product.description ? product.description.replace(/<[^>]*>/g, '').substring(0, 160) : `Buy ${product.title} at Smart Quick Assist. Best prices with free shipping.`}
